@@ -30,9 +30,6 @@ if __name__ == '__main__':
     name = body.json()['data']['name']
     token = body.json()['data']['token']
     print(user, name, token)
-    print(opener.get('https://xkfw.xjtu.edu.cn/xsxkapp/sys/xsxkapp/student/4/vcode.do').text)
-    print(opener.get('https://xkfw.xjtu.edu.cn/xsxkapp/sys/xsxkapp/student/4/vcode.do').text)
-    print(opener.get('https://xkfw.xjtu.edu.cn/xsxkapp/sys/xsxkapp/student/4/vcode.do').text)
     body = opener.post('https://xkfw.xjtu.edu.cn/xsxkapp/sys/xsxkapp/student/xkxf.do', data={
         'xklcdm': code,
         'xh': str(user),
@@ -40,5 +37,9 @@ if __name__ == '__main__':
     }, headers={
         'token': token
     })
-    data = get_data(body.text)
-    print(data['collegeName'], data["campusName"], data["schoolClass"], data["schoolClassName"])
+    if body.json()['code'] == '2':
+        print('选课平台register失败')
+    body = opener.get(f'https://xkfw.xjtu.edu.cn/xsxkapp/sys/xsxkapp/elective/courseResult.do?studentCode={user}&electiveBatchCode={code}', headers={
+        'token': token
+    })
+    print(body.text)
